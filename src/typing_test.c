@@ -6,11 +6,13 @@
 
 void typing_test_run(const char *text)
 {
-	int col = 1, cont = 0;
+	int col = 1;
+	size_t cont = 0;
 	bool started_typing = false;
 	size_t end = strlen(text);
+
 	char c;
-	
+
 	while (read(STDIN_FILENO, &c, 1) == 1)
 	{
 		if (!started_typing)
@@ -40,7 +42,7 @@ void typing_test_run(const char *text)
 		// Termina cuando se han procesado todos los caracteres del texto.
 		if (cont == end)
 		  break;
-		}
+	}
 
 	fflush(stdout);
 }

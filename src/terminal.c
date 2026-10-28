@@ -7,7 +7,7 @@ static struct termios original_terminal;
 void terminal_init(void)
 {
     struct termios raw;
-    
+
     tcgetattr(STDIN_FILENO, &original_terminal);          // Obtains current terminal configuration
 
     raw = original_terminal;
@@ -36,4 +36,9 @@ void set_cursor_to_start()
 {
 	printf("\r");
     fflush(stdout);
+}
+
+void move_cursor_up(int number)
+{
+    printf("\033[%iA", number);
 }
