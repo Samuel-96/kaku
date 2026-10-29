@@ -20,7 +20,6 @@ static void init_default()
     arguments.time = 30;
 }
 
-
 void print_usage()
 {
     printf(
@@ -33,10 +32,6 @@ void print_usage()
             "  -f, --file   FILE       Load the test text from a file.\n"
             "  -c, --chrono SECONDS    Set the test duration (default: 30).\n"
             "  -h, --help              Show this help message.\n"
-            "\n"
-            "Notes:\n"
-            "  Exactly one of --text or --file must be provided.\n"
-            "  The duration must be a positive integer.\n"
             "\n"
             "Examples:\n"
             "  kaku -t \"Hello world, this is a typing test.\"\n"

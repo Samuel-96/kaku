@@ -8,15 +8,15 @@ void terminal_init(void)
 {
     struct termios raw;
 
-    tcgetattr(STDIN_FILENO, &original_terminal);          // Obtains current terminal configuration
+    tcgetattr(STDIN_FILENO, &original_terminal); // Obtains current terminal configuration
 
     raw = original_terminal;
 
-    raw.c_lflag     &= ~(ICANON | ECHO);
+    raw.c_lflag    &= ~(ICANON | ECHO);
     raw.c_cc[VMIN]  = 1;
     raw.c_cc[VTIME] = 0;
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &raw); // Sets new terminal configuration
+    tcsetattr(STDIN_FILENO, TCSANOW, &raw);      // Sets new terminal configuration
 }
 
 void terminal_restore(void)

@@ -1,6 +1,9 @@
 #ifndef TYPING_TEST_H
 #define TYPING_TEST_H
 
-void typing_test_run(const char *text);
+#include "../include/stats.h"
+
+void typing_test_run(const char *text, struct stats *stats);
+double compute_time();
 
 #endif
