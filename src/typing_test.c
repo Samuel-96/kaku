@@ -8,9 +8,9 @@
 
 void typing_test_run(const char *text, struct stats *stats)
 {
-	int col = 1;
+	int col     = 1;
 	size_t cont = 0;
-	size_t end = strlen(text);
+	size_t end  = strlen(text);
 
 	char c;
 
@@ -22,13 +22,13 @@ void typing_test_run(const char *text, struct stats *stats)
 		  // \033[32m enable green color; %c prints user input.
 		  // \033[0m restores color.
 		  printf("\033[%dG\033[32m%c\033[0m", col, c);
-		  increase_correct(stats);
+		  if (text[cont] != ' ' && text[cont] != '\0') increase_correct(stats);
 		}
 		else
 		{
 		  // Incorrect char it's showed in red.
 		  printf("\033[%dG\033[31m%c\033[0m", col, text[cont]);
-		  increase_incorrect(stats);
+		  if (text[cont] != ' ' && text[cont] != '\0') increase_incorrect(stats);
 		}
 
 		// Increment column, refresh screen after type and increment char counter.

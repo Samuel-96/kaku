@@ -91,14 +91,14 @@ bool parse_arguments(int argc, char *argv[])
     {
         switch (opt) {
              case 't':
-                 arguments.text = optarg;
-                 break;
+                arguments.text = optarg;
+                break;
              case 'f':
                 arguments.file  = optarg;
-                 break;
+                break;
              case 'c':
-                 arguments.time = check_time_argument(optarg);
-                 break;
+                arguments.time = check_time_argument(optarg);
+                break;
              default: print_usage();
                  exit(EXIT_FAILURE);
         }
