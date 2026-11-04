@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
-#include <time.h>
 
 #include "../include/terminal.h"
 #include "../include/typing_test.h"
@@ -11,9 +9,6 @@
 
 void typing_test_file(const char *file_path, struct stats *stats);
 void typing_test_text(const char *text, struct stats *stats);
-double compute_time(struct timespec tic, struct timespec toc);
-
-struct timespec tic, toc;
 
 int main(int argc, char *argv[])
 {
@@ -29,11 +24,9 @@ int main(int argc, char *argv[])
 	const char *file_path = args->file;
 	// const long time = args->time;
 
-	struct stats stats;
-	stats.correct   = 0;
-	stats.incorrect = 0;
-	stats.words     = 0;
-	stats.chars     = 0;
+	struct stats stats = {0};
+
+	printf("\n");
 
 	if (text != NULL)
 		typing_test_text(text, &stats);
@@ -41,9 +34,7 @@ int main(int argc, char *argv[])
 	if(file_path != NULL)
 		typing_test_file(file_path, &stats);
 
-
-	printf("Time spent: %.2f sec.\n", compute_time(tic, toc));
-	printf("Words:      %d\n", stats.words);
+		
 	print_stats(&stats);
 
 	return 0;
@@ -51,18 +42,18 @@ int main(int argc, char *argv[])
 
 void typing_test_text(const char *text, struct stats *stats)
 {
-	// Initialize terminal with new configuration and start timer
+	// Initialize terminal with new configuration, store words and chars in stats struct.
 	terminal_init();
-	clock_gettime(CLOCK_MONOTONIC, &tic);
-	count_words(text, stats);
+	count_text_stats(text, stats);
 
-	// Start the typing test
+	// Start the typing test.
+	start_timer(stats);
 	terminal_print_prompt(text);
 	set_cursor_to_start();
 	typing_test_run(text, stats);
 
-	// End timer and restore terminal configuration
-	clock_gettime(CLOCK_MONOTONIC, &toc);
+	// End timer and restore terminal configuration.
+	end_timer(stats);
 	terminal_restore();
 }
 
@@ -77,7 +68,7 @@ void typing_test_file(const char *file_path, struct stats *stats)
 	}
 
 	terminal_init();
-	clock_gettime(CLOCK_MONOTONIC, &tic);
+	start_timer(stats);
 
 	char buffer[2048]; // buffer that stores each line of provided txt file
 
@@ -99,7 +90,7 @@ void typing_test_file(const char *file_path, struct stats *stats)
 		// If there is a newline, ignore it and continue to the next.
 		if (buffer[0] == '\0') continue;
 
-		count_words(buffer, stats);
+		count_text_stats(buffer, stats);
 		terminal_print_prompt(buffer);
 		// move_cursor_up(1); No need to move the cursor since we now ignore the new lines in files.
 		set_cursor_to_start();
@@ -110,11 +101,6 @@ void typing_test_file(const char *file_path, struct stats *stats)
 
 	fclose(f);
 
-	clock_gettime(CLOCK_MONOTONIC, &toc);
+	end_timer(stats);
 	terminal_restore();
-}
-
-double compute_time(struct timespec tic, struct timespec toc)
-{
-	return (toc.tv_sec - tic.tv_sec) + (toc.tv_nsec - tic.tv_nsec) / 1e9;
 }
